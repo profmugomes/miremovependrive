@@ -23,7 +23,6 @@ import (
 )
 
 const VERSION_APP string = "4.0.0"
-
 var a fyne.App
 
 func convertBytes(value float64) string {
@@ -95,12 +94,12 @@ func main() {
 
 	mnuAbout := fyne.NewMenu("Sobre",
 		fyne.NewMenuItem("Verificar Atualização", func() {
-			url, _ := url.Parse("https://github.com/mugomes/miremovependrive/releases")
+			url, _ := url.Parse("https://github.com/profmugomes/miremovependrive/releases")
 			a.OpenURL(url)
 		}),
 		fyne.NewMenuItemSeparator(),
-		fyne.NewMenuItem("Apoie MiRemovePendrive", func() {
-			url, _ := url.Parse("https://mugomes.github.io/apoie.html")
+		fyne.NewMenuItem("Comprar Licença", func() {
+			url, _ := url.Parse("https://www.profmugomes.com.br/#contato")
 			a.OpenURL(url)
 		}),
 		fyne.NewMenuItemSeparator(),
