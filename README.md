@@ -1,15 +1,12 @@
 # MiRemovePendrive
 
-> [!NOTE]
-> This repository has been migrated to Codeberg, please see: https://codeberg.org/bluice/miremovependrive
+[![License](https://img.shields.io/badge/license-PolyForm%20Strict%201.0.0-5351FB)](LICENSE.md)
 
 Remove pendrive safely.
 
-## Information
+---
 
- - [Page MiRemovePendrive](https://github.com/mugomes/miremovependrive)
-
-## System Requirement
+## 🧩 System Requirement
 
 ### Linux
 
@@ -21,12 +18,37 @@ Remove pendrive safely.
 - Windows 10 or higher
 - Graphics: GPU with OpenGL support (required for 3D acceleration)
 
+---
+
+## 👤 Author
+
+**Murilo Gomes Julio**
+
+🔗 [https://www.profmugomes.com.br](https://www.profmugomes.com.br)
+
+📺 [https://youtube.com/@profmugomes](https://youtube.com/@profmugomes)
+
+---
+
 ## License
 
-The MiRemovePendrive is provided under:
+Copyright (c) 2024-2026 Murilo Gomes Julio. All Rights Reserved.
 
-[SPDX-License-Identifier: GPL-2.0-only](https://github.com/mugomes/miremovependrive/blob/main/LICENSE)
+This project is licensed under the PolyForm Strict License 1.0.0.
 
-Beign under the terms of the GNU General Public License version 2 only.
+### Summary
 
-All contributions to the MiRemovePendrive are subject to this license.
+This software is available for noncommercial use only.
+
+You may:
+- ✔ Use the software for noncommercial purposes.
+- ✔ Inspect and study the source code.
+
+You may not:
+- ✖ Use the software for commercial purposes.
+- ✖ Modify the software.
+- ✖ Redistribute the software.
+
+See the full license terms at [LICENSE.md](LICENSE.md).
+
+This summary is provided for convenience only.
