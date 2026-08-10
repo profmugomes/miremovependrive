@@ -1,14 +1,13 @@
-// Copyright (C) 2024-2026 Murilo Gomes Julio
-// SPDX-License-Identifier: GPL-2.0-only
+// Copyright (c) 2024-2026 Murilo Gomes Julio. All Rights Reserved.
 
-// Site: https://mugomes.github.io
+// Licensed under the PolyForm Strict License 1.0.0.
+// See LICENSE.md for details.
 
 package main
 
 import (
 	"fmt"
 	"net/url"
-	"os/exec"
 	"os/user"
 	"strconv"
 	"strings"
@@ -17,12 +16,15 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/widget"
-	"github.com/mugomes/mgcolumnview"
-	"github.com/mugomes/mgdialogbox"
-	"github.com/mugomes/mgsmartflow"
+	"github.com/profmugomes/mgcolumnview/v2"
+	"github.com/profmugomes/mgdialogbox/v2"
+	"github.com/profmugomes/mgrun/v2"
+	"github.com/profmugomes/mgsmartflow/v2"
 )
 
-const VERSION_APP string = "3.0.2"
+const VERSION_APP string = "4.0.0"
+
+var a fyne.App
 
 func convertBytes(value float64) string {
 	var base float64
@@ -48,23 +50,24 @@ func convertBytes(value float64) string {
 	return fmt.Sprintf("%.2f %s", base, tipo)
 }
 
-func getRun(name string, args ...string) string {
-	cmd := exec.Command(name, args...)
-	var out strings.Builder
-	cmd.Stdout = &out
+func getRun(command string) string {
+	sRun := mgrun.New(command)
 
-	err := cmd.Run()
+	var sLine string
+	sRun.OnStdout(func(line string) {
+		sLine = line
+	})
 
-	if err != nil {
-		fmt.Errorf("Error: %s", err)
+	if err := sRun.Run(); err != nil {
+		fmt.Printf("Erro na execução: %v\n", err)
 	}
 
-	return out.String()
+	return sLine
 }
 
 func getDrivers() []string {
 	userCurrent, _ := user.Current()
-	sResult := getRun("ls", strings.Join([]string{"/media/", userCurrent.Name, "/"}, ""))
+	sResult := getRun(fmt.Sprintf("ls %s", strings.Join([]string{"/run/media/", userCurrent.Name, "/"}, "")))
 
 	list := strings.Split(sResult, "\n")
 
@@ -81,11 +84,11 @@ func getDrivers() []string {
 func main() {
 	sIcon := fyne.NewStaticResource("miremovependrive.png", resourceAppIconPngData)
 
-	app := app.NewWithID("br.com.mugomes.miremovependrive")
-	app.Settings().SetTheme(&myDarkTheme{})
-	app.SetIcon(sIcon)
-	
-	window := app.NewWindow("MiRemovePendrive")
+	a = app.NewWithID("br.com.mugomes.miremovependrive")
+	a.Settings().SetTheme(&myDarkTheme{})
+	a.SetIcon(sIcon)
+
+	window := a.NewWindow("MiRemovePendrive")
 	window.CenterOnScreen()
 	window.SetFixedSize(true)
 	window.Resize(fyne.NewSize(530, 275))
@@ -93,16 +96,16 @@ func main() {
 	mnuAbout := fyne.NewMenu("Sobre",
 		fyne.NewMenuItem("Verificar Atualização", func() {
 			url, _ := url.Parse("https://github.com/mugomes/miremovependrive/releases")
-			app.OpenURL(url)
+			a.OpenURL(url)
 		}),
 		fyne.NewMenuItemSeparator(),
 		fyne.NewMenuItem("Apoie MiRemovePendrive", func() {
 			url, _ := url.Parse("https://mugomes.github.io/apoie.html")
-			app.OpenURL(url)
+			a.OpenURL(url)
 		}),
 		fyne.NewMenuItemSeparator(),
 		fyne.NewMenuItem("Sobre MiRemovePendrive", func() {
-			showAbout(app)
+			showAbout()
 		}),
 	)
 
@@ -155,9 +158,9 @@ func main() {
 				lblInfo.SetText(fmt.Sprintf("Obtendo dispositivo %s...", cboDisp.Selected))
 			})
 
-			sLSBLK := fmt.Sprintf("lsblk -l | grep \"/media/%s/%s\"", userCurrent.Name, cboDisp.Selected)
+			sLSBLK := fmt.Sprintf("lsblk -l | grep \"/run/media/%s/%s\"", userCurrent.Name, cboDisp.Selected)
 			time.Sleep(1 * time.Second)
-			sDriver := strings.Split(getRun("bash", "-c", sLSBLK), " ")[0]
+			sDriver := strings.Split(getRun(sLSBLK), " ")[0]
 			time.Sleep(1 * time.Second)
 
 			fyne.Do(func() {
@@ -166,7 +169,7 @@ func main() {
 
 			uDisks1 := fmt.Sprintf("udisksctl unmount -b /dev/%s", sDriver)
 			time.Sleep(1 * time.Second)
-			sInfo := getRun("bash", "-c", uDisks1)
+			sInfo := getRun(uDisks1)
 			time.Sleep(1 * time.Second)
 
 			fyne.Do(func() {
@@ -176,7 +179,7 @@ func main() {
 			if sInfo != "" {
 				uDisks2 := fmt.Sprintf("udisksctl power-off -b /dev/%s", sDriver)
 				time.Sleep(1 * time.Second)
-				sInfo = getRun("bash", "-c", uDisks2)
+				sInfo = getRun(uDisks2)
 				time.Sleep(1 * time.Second)
 
 				fyne.Do(func() {
@@ -184,7 +187,7 @@ func main() {
 					flow.Container.Refresh()
 
 					if sInfo == "" {
-						mgdialogbox.NewAlert(app, "MiRemovePendrive", "Dispositivo removido com sucesso!", false, "Ok")
+						mgdialogbox.NewAlert(a, "MiRemovePendrive", "Dispositivo removido com sucesso!", false, "Ok", nil)
 
 						cboDisp.ClearSelected()
 						cboDisp.Options = getDrivers()
@@ -196,13 +199,13 @@ func main() {
 							checkDisable()
 						}
 					} else {
-						mgdialogbox.NewAlert(app, "MiRemovePendrive", "Dispositivo ocupado, não é possível remover!", true, "Ok")
+						mgdialogbox.NewAlert(a, "MiRemovePendrive", "Dispositivo ocupado, não é possível remover!", true, "Ok", nil)
 					}
 				})
 			} else {
 				fyne.Do(func() {
 					flow.Container.Remove(lblInfo)
-					mgdialogbox.NewAlert(app, "MiRemovePendrive", "Dispositivo ocupado, não é possível desmontá-lo!", true, "Ok")
+					mgdialogbox.NewAlert(a, "MiRemovePendrive", "Dispositivo ocupado, não é possível desmontá-lo!", true, "Ok", nil)
 				})
 			}
 		}()
@@ -216,9 +219,8 @@ func main() {
 		flow.AddRow(cv)
 		flow.Resize(cv, window.Canvas().Size().Width, 84)
 
-		userMedia := fmt.Sprintf("df -B1 | grep \"/media/%s/%s\"", userCurrent.Name, cboDisp.Selected)
-
-		sResult := getRun("bash", "-c", userMedia)
+		userMedia := fmt.Sprintf("df -B1 | grep \"/run/media/%s/%s\"", userCurrent.Name, cboDisp.Selected)
+		sResult := getRun(userMedia)
 		sSize := strings.Split(strings.TrimSpace(sResult), " ")
 
 		aItens := []string{}
