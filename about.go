@@ -25,7 +25,7 @@ func showAbout() {
 
 	flow := mgsmartflow.New()
 
-	lblSoftware := canvas.NewText(fmt.Sprintf("MiCheckHash - Version: %s", VERSION_APP), color.Opaque)
+	lblSoftware := canvas.NewText(fmt.Sprintf("MiRemovePendrive - Version: %s", VERSION_APP), color.Opaque)
 	lblSoftware.TextSize = 18
 	lblSoftware.TextStyle.Bold = true
 
@@ -47,7 +47,7 @@ func showAbout() {
 	flow.AddColumn(lblSite1, lblSite2)
 	flow.Resize(lblSite1, 34, 0)
 
-	lblCopyright1 := widget.NewLabel("Copyright (c) 2026 Murilo Gomes Julio. All Rights Reserved.")
+	lblCopyright1 := widget.NewLabel("Copyright (c) 2024-2026 Murilo Gomes Julio. All Rights Reserved.")
 	lblCopyright1.TextStyle = fyne.TextStyle{Bold: true}
 	flow.AddRow(lblCopyright1)
 
