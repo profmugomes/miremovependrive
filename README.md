@@ -10,7 +10,7 @@ Remove pendrive safely.
 
 ### Linux
 
- - Ubuntu 24.04 or higher
+ - Ubuntu 26.04 or higher
  - Graphics: GPU with OpenGL support (required for 3D acceleration)
 
 ### Windows
