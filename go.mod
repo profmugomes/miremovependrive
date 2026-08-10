@@ -10,8 +10,6 @@ require (
 	github.com/profmugomes/mgsmartflow/v2 v2.0.0
 )
 
-replace github.com/profmugomes/mgrun/v2 => /home/profmugomes/Projects/Go/libs/mgrun
-
 require (
 	fyne.io/systray v1.12.2 // indirect
 	github.com/BurntSushi/toml v1.6.0 // indirect
