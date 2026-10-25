@@ -1,0 +1,193 @@
+' Gambas class file
+
+' Copyright (C) 2024-2026 Murilo Gomes
+' SPDX-License-Identifier: GPL-2.0-only
+
+' Site: https://www.profmugomes.com.br
+
+Private sMo As Watch
+
+Public Sub Form_Open()
+
+  sMo = New Watch("/run/media/" & User.Name & "/") As "moNotify"
+
+  getDrivers()
+  
+End
+
+Private Sub getDrivers()
+  
+  Dim sDriver As String 
+  Dim sDrivers As String[]
+  
+  cboSelectDriver.Clear()
+  
+  Shell "ls /run/media/" & User.Name & "/" Wait To sDriver
+  
+  sDrivers = Split(sDriver, gb.NewLine)
+  
+  If sDrivers.Count > 0 Then 
+    cboSelectDriver.Text = sDrivers[0]
+    btnInfo.Enabled = True
+    btnRemover.Enabled = True
+  Else 
+    btnInfo.Enabled = False
+    btnRemover.Enabled = False
+  Endif 
+  
+  For Each Row As String In sDrivers
+    If Not Row = "" Then
+      cboSelectDriver.Add(Row)
+    Endif
+  Next
+
+End
+
+Public Sub btnAtualizar_Click()
+  
+  cv1.Visible = False
+  getDrivers()
+  
+End
+
+Public Sub mnuSobre_Click()
+  
+  FAbout.ShowDialog()
+  
+End
+
+Public Sub btnRemover_Click()
+  
+  cv1.Visible = False
+  RemoveDriver()
+  
+End
+
+Private Sub RemoveDriver()
+  
+  If cboSelectDriver.Text = "" Then 
+    Message.Info(("Select a device to safely remove it!"), ("Continue"))
+  Else 
+    Dim sInfo As String 
+    Dim sA As String[]
+    
+    lblInfo.Text = Subst(("Getting device &1..."), cboSelectDriver.Text)
+    
+    Wait 1
+    
+    Shell "lsblk -l | grep \"/run/media/" & User.Name & "/" & cboSelectDriver.Text & "\"" Wait To sInfo
+    sA = Split(sInfo, " ")
+    
+    Wait 1
+    
+    Dim sDriver As String = sA[0]
+    lblInfo.Text = Subst(("Unmounting device &1..."), sDriver)
+    Wait 1
+    Shell "udisksctl unmount -b /dev/" & sDriver Wait To sInfo
+    Wait 1
+    If Not sInfo = "" Then 
+      lblInfo.Text = Subst(("Turning off device &1..."), sDriver)
+      Wait 1
+      Shell "udisksctl power-off -b /dev/" & sDriver Wait To sInfo
+      Wait 1
+      
+      lblInfo.Text = ""
+      If sInfo = "" Then 
+        Message.Info(("Device removed successfully!"), ("Continue"))
+      Else 
+        Message.Error(("Device working, could not be removed!"))
+      Endif
+    Else 
+      Message.Error(("Device working, unable to disassemble!"))
+    Endif
+    
+  Endif 
+  
+  getDrivers()
+  
+End
+
+Private Function ConvertBytes(value As Float) As String
+  
+  Dim base As Float
+  Dim tipo As String 
+  
+  If value < 1024 Then 
+    base = value
+    tipo = " bytes"
+  Else If value < 1048576 Then
+    base = value / 1024
+    tipo = " KB"
+  Else If value < 1073741824 Then
+    base = value / 1024 / 1024
+    tipo = " MB"
+  Else If value < 1099511627776 Then
+    base = value / 1024 / 1024 / 1024
+    tipo = " GB"
+  Else If value < 1125899906842624 Then
+    base = value / 1024 / 1024 / 1024 / 1024
+    tipo = " TB"
+  Endif
+  
+  Return Format(base, "#.#" & tipo)
+  
+End
+
+Public Sub btnInfo_Click()
+  
+  Dim a1 As String
+  Dim a2 As String[]
+  Dim a3 As String[] = []
+  
+  cv1.Visible = Not cv1.Visible
+  
+  Shell "df -B1 | grep \"/run/media/" & User.Name & "/" & cboSelectDriver.Text & "\"" Wait To a1
+  
+  a2 = Split(Trim(a1), " ")
+  For Each row As String In a2 
+    If IsNull(row) = False And row <> "" Then 
+      a3.Add(row)
+    Endif
+  Next
+  
+  cv1.Columns.Count = 5
+  cv1.Columns[0].Text = ("Available")
+  cv1.Columns[0].alignment = Align.Center
+  cv1.Columns[0].Width = 150
+  cv1.Columns[1].Text = ("Used")
+  cv1.Columns[1].alignment = Align.Center
+  cv1.Columns[1].Width = 150
+  cv1.Columns[2].Text = ("Total")
+  cv1.Columns[2].alignment = Align.Center
+  cv1.Columns[2].Width = 150
+  cv1.Columns[3].Text = ("Used %")
+  cv1.Columns[3].alignment = Align.Center
+  cv1.Columns[3].Width = 100
+  cv1.Header = True
+  
+  cv1.Clear()
+
+  cv1.Add("info", ConvertBytes(a3[3]))
+  cv1["info"][1] = ConvertBytes(a3[2])
+  cv1["info"][2] = ConvertBytes(a3[1])
+  cv1["info"][3] = a3[4]
+  
+End
+
+Public Sub mnuApoie_Click()
+  
+  Shell "xdg-open \"https://github.com/sponsors/profmugomes\""
+  
+End 
+
+Public Sub moNotify_Create()
+
+  getDrivers()
+  
+End
+
+Public Sub Form_Close()
+  
+  Quit
+  
+End

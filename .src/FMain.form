@@ -1,0 +1,52 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,66,42)
+  Font = Font["12"]
+  Text = ("MiRemovePendrive")
+  Icon = Picture["miremovependrive.png"]
+  Resizable = False
+  { Menu1 Menu
+    Text = ("About")
+    { mnuApoie Menu
+      Text = ("Support MiRemovePendrive")
+    }
+    { Separador1 Menu
+    }
+    { mnuSobre Menu
+      Text = ("About MiRemovePendrive")
+    }
+  }
+  { cv1 ColumnView
+    MoveScaled(2,18,62,18)
+    Visible = False
+    Mode = Select.None
+    Resizable = True
+  }
+  { Label1 Label
+    MoveScaled(2,2,59,3)
+    Font = Font["Bold,12"]
+    Text = ("Select the device you want to remove:")
+  }
+  { cboSelectDriver ComboBox
+    MoveScaled(2,6,62,4)
+    ReadOnly = True
+  }
+  { btnRemover Button
+    MoveScaled(2,11,20,5)
+    Enabled = False
+    Text = ("Remove")
+  }
+  { btnAtualizar Button
+    MoveScaled(44,11,20,5)
+    Text = ("Refresh")
+  }
+  { lblInfo Label
+    MoveScaled(2,18,60,4)
+  }
+  { btnInfo Button
+    MoveScaled(23,11,20,5)
+    Enabled = False
+    Text = ("Information")
+  }
+}

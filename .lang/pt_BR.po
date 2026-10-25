@@ -1,0 +1,96 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: miremovependrive 3.22.2\n"
+"PO-Revision-Date: 2026-10-25 20:04 UTC\n"
+"Last-Translator: profmugomes <profmugomes@gmail.com>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: FMain.form:24
+msgid "About"
+msgstr "Sobre"
+
+#: FAbout.form:16 FMain.form:34
+msgid "About MiRemovePendrive"
+msgstr "Sobre MiRemovePendrive"
+
+#: FMain.class:154
+msgid "Available"
+msgstr "Disponível"
+
+#: FMain.class:69
+msgid "Continue"
+msgstr "Continuar"
+
+#: FMain.class:96
+msgid "Device removed successfully!"
+msgstr "Dispositivo removido com sucesso!"
+
+#: FMain.class:98
+msgid "Device working, could not be removed!"
+msgstr "Dispositivo funcionando, não foi possível removê-lo!"
+
+#: FMain.class:101
+msgid "Device working, unable to disassemble!"
+msgstr "Dispositivo funcionando, não é possível desmontar!"
+
+#: FMain.class:74
+msgid "Getting device &1..."
+msgstr "Obtendo dispositivo &1..."
+
+#: FMain.form:74
+msgid "Information"
+msgstr "Informação"
+
+# gb-ignore
+#: .project:1 FMain.form:19
+msgid "MiRemovePendrive"
+msgstr ""
+
+#: FMain.form:64
+msgid "Refresh"
+msgstr "Atualizar"
+
+#: FMain.form:59
+msgid "Remove"
+msgstr "Remover"
+
+#: .project:2
+msgid "Remove pendrive safely."
+msgstr "Remova o pendrive com segurança."
+
+#: FMain.class:69
+msgid "Select a device to safely remove it!"
+msgstr "Selecione um dispositivo para removê-lo com segurança!"
+
+#: FMain.form:48
+msgid "Select the device you want to remove:"
+msgstr "Selecione o dispositivo que deseja remover:"
+
+#: FMain.form:27
+msgid "Support MiRemovePendrive"
+msgstr "Apoie MiRemovePendrive"
+
+#: FMain.class:160
+msgid "Total"
+msgstr "Total"
+
+#: FMain.class:89
+msgid "Turning off device &1..."
+msgstr "Desligando dispositivo &1..."
+
+#: FMain.class:84
+msgid "Unmounting device &1..."
+msgstr "Desmontando dispositivo &1..."
+
+#: FMain.class:157
+msgid "Used"
+msgstr "Usado"
+
+#: FMain.class:163
+msgid "Used %"
+msgstr "Usado %"
+
