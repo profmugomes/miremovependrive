@@ -10,7 +10,7 @@ Remove pendrive safely.
 
 ### Linux
 
-- Ubuntu 26.04 or higher
+- Ubuntu 24.04 LTS or higher
 - udisks2
 
 ## 👤 Autor
@@ -27,7 +27,7 @@ Remove pendrive safely.
 
 The MiRemovePendrive is provided under:
 
-[SPDX-License-Identifier: GPL-2.0-only](https://spdx.org/licenses/GPL-2.0-only.html)
+[SPDX-License-Identifier: GPL-2.0-only](https://github.com/profmugomes/miremovependrive/blob/main/LICENSE)
 
 Beign under the terms of the GNU General Public License version 2 only.
 
