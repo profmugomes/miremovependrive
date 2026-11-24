@@ -1,6 +1,6 @@
 ' Gambas class file
 
-' Copyright (C) 2024-2026 Murilo Gomes
+' Copyright (C) 2024-2026 Murilo Gomes <profmugomes.com.br>
 ' SPDX-License-Identifier: GPL-2.0-only
 
 ' Site: https://www.profmugomes.com.br
@@ -15,6 +15,6 @@ End
 
 Public Sub Form_Open()
 
-  
+  lblVersion.Text = Subst(lblVersion.Text, Application.Version)
 
 End
